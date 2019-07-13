@@ -12,6 +12,13 @@
 */
 
 Route::get('/', 'HomeController@index')->name('dashboard');
+Route::get('/welcome', function() { return view('welcome'); })->name('welcome');
 
 Auth::routes();
+
+// Posts
+Route::resource('posts', 'PostController');
+
+// Photos
+Route::resource('photos', 'PhotoController');
 
