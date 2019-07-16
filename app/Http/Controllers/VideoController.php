@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Video;
+use App\Category;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class VideoController extends Controller
@@ -14,7 +16,9 @@ class VideoController extends Controller
      */
     public function index()
     {
-        //
+        $videos = Video::all();
+
+        return view('videos.index')->with('videos', $videos);
     }
 
     /**
@@ -24,7 +28,13 @@ class VideoController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+
+        $context = [
+            'categories' => $categories,
+        ];
+
+        return view('videos.CreateOrUpdate')->with($context);
     }
 
     /**
@@ -35,7 +45,18 @@ class VideoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'category_id' => 'required',
+            'url' => 'required|unique:videos'
+        ]);
+
+        $video = new Video;
+        $video->category_id = $request->input('category_id');
+        $video->url = $request->input('url');
+        $video->user_id = Auth::user()->id;
+        $video->save();
+
+        return redirect()->route('videos.index')->with('success', 'Video Updated');
     }
 
     /**
@@ -57,7 +78,14 @@ class VideoController extends Controller
      */
     public function edit(Video $video)
     {
-        //
+        $categories = Category::all();
+
+        $context = [
+            'categories' => $categories,
+            'video_edit' => $video
+        ];
+
+        return view('videos.CreateOrUpdate')->with($context);
     }
 
     /**
@@ -69,7 +97,17 @@ class VideoController extends Controller
      */
     public function update(Request $request, Video $video)
     {
-        //
+        $this->validate($request, [
+            'category_id' => 'required',
+            'url' => 'required|unique:videos,url,'.$video->id
+        ]);
+
+        $video->category_id = $request->input('category_id');
+        $video->url = $request->input('url');
+        $video->user_id = Auth::user()->id;
+        $video->save();
+
+        return redirect()->route('videos.index')->with('success', 'Video Updated');
     }
 
     /**
@@ -80,6 +118,13 @@ class VideoController extends Controller
      */
     public function destroy(Video $video)
     {
-        //
+        try {
+            $video->delete();
+            return redirect()->back()->with('success', 'Video Deleted');
+        }
+        catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == "23000")
+                return redirect()->back()->with('error', 'Cannot be deleted. Check constraints.');
+        }
     }
 }
