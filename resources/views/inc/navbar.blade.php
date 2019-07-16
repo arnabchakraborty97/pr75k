@@ -24,6 +24,15 @@
                             <a class="nav-link" href="{{ route('posts.index') }}">Blog</a>
                         </li>
 
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('categories.index') }}">Categories</a>
+                            </li>
+                        @endauth
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('videos.index') }}">Videos</a>
+                        </li>
+
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">

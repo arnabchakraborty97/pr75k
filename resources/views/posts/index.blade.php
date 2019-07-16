@@ -8,34 +8,38 @@
 
 @section('content')
 
-	<ul class="list-group">
-		@foreach($posts as $post)
+	@if(count($posts) > 0)
+		<ul class="list-group">
+			@foreach($posts as $post)
 
-			<li class="list-group-item">
-				<h4><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a></h4>
+				<li class="list-group-item">
+					<h4><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a></h4>
 
-				@foreach($post->photos as $photo)
+					@foreach($post->photos as $photo)
 
-					<img src="{{ URL::to('/')}}/storage/attachments/{{ $photo->attachment }}" width="200" height="200"><br>
+						<img src="{{ URL::to('/')}}/storage/attachments/{{ $photo->attachment }}" width="200" height="200"><br>
 
-				@endforeach
+					@endforeach
 
-				@if($post->user == Auth::user())
-					<a href="{{ route('posts.edit', $post) }}" class="btn btn-primary btn-sm">Edit</a>
+					@if($post->user == Auth::user())
+						<a href="{{ route('posts.edit', $post) }}" class="btn btn-primary btn-sm">Edit</a>
 
-					{{ Form::open(['action' => ['PostController@destroy', $post], 'method' => 'POST']) }}
+						{{ Form::open(['action' => ['PostController@destroy', $post], 'method' => 'POST']) }}
 
-						{{ Form::hidden('_method', 'DELETE') }}
+							{{ Form::hidden('_method', 'DELETE') }}
 
-						{{ Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) }}
+							{{ Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) }}
 
-					{{ Form::close() }}
-				@endif
+						{{ Form::close() }}
+					@endif
 
-			</li>
+				</li>
 
-		@endforeach
-	</ul>
+			@endforeach
+		</ul>
+	@else
+		Noithing to show
+	@endif
 
 	@auth
 

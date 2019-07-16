@@ -22,3 +22,9 @@ Route::resource('posts', 'PostController');
 // Photos
 Route::resource('photos', 'PhotoController');
 
+// Categories
+Route::resource('categories', 'CategoryController');
+
+// Videos
+Route::resource('videos', 'VideoController');
+

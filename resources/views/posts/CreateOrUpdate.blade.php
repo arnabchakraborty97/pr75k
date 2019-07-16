@@ -21,7 +21,7 @@
 				{{ Form::textarea('content', isset($post_edit)? $post_edit->content: '', ['class' => 'form-control']) }}
 
 				{{ Form::label('photos', 'Photos', ['class' => 'col-form-label']) }}
-				@if ($post_edit)
+				@if (isset($post_edit))
 					@foreach($post_edit->photos as $photo)
 						<img src="{{ URL::to('/')}}/storage/attachments/{{ $photo->attachment }}" width="50" height="50">
 					@endforeach
