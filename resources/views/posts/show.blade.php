@@ -14,6 +14,12 @@
 			{!! nl2br($post->content) !!}
 		</div>
 
+		@foreach($post->photos as $photo)
+
+			<img src="{{ URL::to('/')}}/storage/attachments/{{ $photo->attachment }}" width="200" height="200"><br>
+
+		@endforeach		
+
 		@if (Auth::user() && Auth::user() == $post->user)
 			<a href="{{ route('posts.edit', $post) }}" class="btn btn-primary btn-sm col-sm-1">Edit</a>
 

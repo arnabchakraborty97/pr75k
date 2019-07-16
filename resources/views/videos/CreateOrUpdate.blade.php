@@ -17,7 +17,7 @@
 				{{ Form::label('category_id', 'Category', ['class' => 'col-form-label']) }}
 				<select name="category_id" for="category_id" class="form-control">
 					@foreach($categories as $category)
-						<option value="{{ $category->id }}">{{ $category->name }}</option>
+						<option value="{{ $category->id }}" @if(isset($video_edit)) @if($video_edit->category->id == $category->id) selected @endif @endif>{{ $category->name }}</option>
 					@endforeach
 				</select>
 
